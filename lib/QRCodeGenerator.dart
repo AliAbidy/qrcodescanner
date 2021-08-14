@@ -11,6 +11,7 @@ class QRCodeGenerator extends State<QRGeneratorWidget> {
     appBar: AppBar(
       backgroundColor: Colors.grey,
       title: Text("QR Code Generator"),
+      centerTitle: true,
       leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {

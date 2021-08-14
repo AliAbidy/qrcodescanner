@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qrcodescanner/MainScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QRCodeScanner extends State<QRViewWidget> {
   QRViewController? controller;
@@ -41,6 +42,7 @@ class QRCodeScanner extends State<QRViewWidget> {
       appBar: AppBar(
         backgroundColor: Colors.grey,
         title: Text("QR Code Generator"),
+        centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -56,7 +58,25 @@ class QRCodeScanner extends State<QRViewWidget> {
           Positioned(
             bottom: 10,
             child: buildResult(),
-          )
+          ),
+          Positioned(
+            bottom: 30,
+            child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.amber,
+                  onPrimary: Colors.black
+              ),
+              onPressed: (()
+              {
+                if(this.barcode != null) {
+                  _launchURL("https://www.google.com/search?q="+this.barcode!.code.replaceAll(" ", "+"), this.barcode!.code);
+                }
+
+              }
+              ), icon: Icon(Icons.open_in_browser), label: Text("Open In Browser"),
+            )
+            ,
+          ),
         ],
 
       ),
@@ -68,8 +88,9 @@ class QRCodeScanner extends State<QRViewWidget> {
     maxLines: 3,
     style: TextStyle(
       backgroundColor: Colors.transparent,
-      color: Colors.grey,
+      color: Colors.amber,
     ),
+
   );
 
   Widget _buildQrView(BuildContext context) {
@@ -89,14 +110,17 @@ class QRCodeScanner extends State<QRViewWidget> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((barcode) => setState(() => this.barcode = barcode));
+    controller.scannedDataStream.listen((barcode) => setState(() {
+      this.barcode = barcode;
+    }));
   }
 
   onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
 
   }
 
-
+  _launchURL(String google_url, _url) async =>
+      await canLaunch(_url) ? await launch(_url) : launch(google_url);
 }
 
 class QRViewWidget extends StatefulWidget {

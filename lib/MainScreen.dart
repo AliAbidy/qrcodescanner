@@ -1,5 +1,8 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qrcodescanner/BarCodeGenerator.dart';
+import 'package:qrcodescanner/BarCodeScanner.dart';
 import 'package:qrcodescanner/QRCodeGenerator.dart';
 import 'package:qrcodescanner/QRCodeScanner.dart';
 
@@ -13,7 +16,15 @@ class MainScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.grey,
-        title: Text("QR & Bar Code App"),
+        title: Text(
+          "QR & Bar Code App",
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => exit(0),
+        ),
+
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -80,12 +91,14 @@ class MainScreen extends StatelessWidget {
                     color: Colors.grey, // button color
                     child: InkWell(
                       splashColor: Colors.green, // splash color
-                      onTap: () {}, // button pressed
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(context, BarCodeScannerWidget.idScreen, (route) => false);
+                      }, // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Icon(Icons.bar_chart), // icon
-                          Text("Bar Code Scanner"), // text
+                          Text("Barcode Scanner"), // text
                         ],
                       ),
                     ),
@@ -100,12 +113,14 @@ class MainScreen extends StatelessWidget {
                     color: Colors.grey, // button color
                     child: InkWell(
                       splashColor: Colors.green, // splash color
-                      onTap: () {}, // button pressed
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(context, BarCodeGeneratorWidget.idScreen, (route) => false);
+                      }, // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Icon(Icons.bar_chart_outlined), // icon
-                          Text("Bar Code Generator"), // text
+                          Text("Barcode Generator"), // text
                         ],
                       ),
                     ),
